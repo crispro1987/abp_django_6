@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col col-4">
+<h1>Registro de Usuario</h1>
+    {% if messages %}
+    <div class="alert alert-danger">
+        por favor corrige los errores en el formulario
+    </div>
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="button" type="submit"> Enviar</button>
+    </form>
+    </div>
+</div>
+{%endblock %}
