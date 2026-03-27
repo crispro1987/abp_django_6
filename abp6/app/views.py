@@ -1,30 +1,33 @@
 from django.shortcuts import render, redirect
 from .forms import UserForm, RegisterForm
-
-from django.contrib.auth import login
+from .models import Projects
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
 def home(request):
-    return render(request, 'base.html')
+    projects = Projects.objects.filter(user=request.user).prefetch_related('tareas')
+
+    return render(request, 'base.html', {
+        'projects': projects
+    })
 
 def login_view(request):
     if request.method == 'POST':
-        form = UserForm(request.POST)
+        form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            password = form.cleaned_data['password']
-
-            return render(request, 'resultado.html', {
-                'nombre': name,
-                'email': email,
-                'contrasena': password
-            })
+            user = form.get_user()
+            login(request, user)
+            return redirect('pagina_inicio')
     else:
-        form = UserForm()
+        form = AuthenticationForm()
 
     return render(request, 'login.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 def register_view(request):
     if request.method == "POST":

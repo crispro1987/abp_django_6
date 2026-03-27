@@ -29,7 +29,7 @@ class Task(models.Model):
     description = models.TextField("Descripción",blank=True)
     project = models.ForeignKey(Projects, on_delete=models.CASCADE, related_name='tareas', verbose_name="Proyecto")
     assigned_to = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name="Asignaso a")
-    status = models.CharField("Estado",max_length=20, choices=STATUS, default='pendiente')
+    status = models.CharField("Estado",max_length=20, choices=STATUS, default='P')
     date_create = models.DateTimeField("Fecha de creación",auto_now_add=True)
     expiration_date = models.DateField("Fecha de expiración",null=True, blank=True)
 
