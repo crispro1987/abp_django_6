@@ -1,26 +1,29 @@
 {% extends 'base.html' %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Registro{% endblock %}
 
 
 {% block content %}
-<div class="row">
-    <div class="col col-4">
-<h1>Registro de Usuario</h1>
-    {% if messages %}
-    <div class="alert alert-danger">
-        por favor corrige los errores en el formulario
-    </div>
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-        {{form.as_p}}
-        <button class="button" type="submit"> Enviar</button>
-    </form>
+<div class="row justify-content-center align-items-center h-100">
+    <div class="col-11 col-md-4">
+        <div class="card text-center p-4">
+            <h1>Registro de Usuario</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    
+                    <div class="mb-3">
+                        {{ field }}
+                    </div>
+                    {% if field.errors %}
+                        <div class="text-danger small">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <button class="btn btn-primary" type="submit"> Enviar</button>
+            </form>
+        </div>
     </div>
 </div>
 {%endblock %}

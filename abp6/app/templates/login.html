@@ -1,26 +1,42 @@
 {% extends 'base.html' %}
-{% block title %}Login{% endblock %}
+{% block title %}Iniciar Sesión{% endblock %}
 
 
 {% block content %}
-<div class="row">
-    <div class="col-11 col-md-6">
-        <h1>Ingresar</h1>
-        {% if messages %}
-        <div class="alert alert-danger">
-            El formulario contiene errores.
-        </div>
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-            {% endfor %}
-        {% endif %}
+<div class="row justify-content-center align-items-center h-100">
+    
+    <div class="col-11 col-md-4">
+        <div class="card text-center p-4">
+            <h1>Ingresar</h1>
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger mt-4">
+                    {% for error in form.non_field_errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-        <form method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
-            <button class="button" type="submit"> Enviar</button>
-        </form>
-        <a href="{% url 'register_form'%}">Si no estas registrado, registrese aquí.</a>
+            <form method="POST">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    
+                    <div class="mb-3">
+                        {{ field }}
+                    </div>
+                    {% if field.errors %}
+                        <div class="text-danger small">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+                <button class="btn btn-primary" type="submit">Enviar</button>
+            </form>
+            <a href="{% url 'register_form'%}">Si no estas registrado, registrese aquí.</a>
+        </div>
+        
+        
     </div>
 </div>
 {% endblock %}
